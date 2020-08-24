@@ -1,12 +1,11 @@
 import discord
 import random
+import os
 from discord.ext import commands
+from cogs import *
+
 # the prefix is what you write before commands
 client = commands.Bot(command_prefix= '.')
-
-@client.event
-async def on_ready():
-    print("Bot is ready")
 
 # to see if a member of the guild/server has joined 
 @client.event
@@ -23,13 +22,9 @@ async def on_member_join(member):
 async def on_member_remove(member):
     print(f'{member} has left the server.')
 
-@client.command()
-async def ping(ctx):
-    await ctx.send(f'pong! {round(client.latency * 1000)}ms')
-
 # fun stuff
-@client.command(aliases=['roast'])
-async def _roast(ctx, *, name, help = 'Responds with a "roast" tailored to the name of the server member given'):
+@client.command(aliases=['roasty', 'Roast'])
+async def roast(ctx, *, name, help = 'Responds with a "roast" tailored to the name of the server member given'):
     roasting_dict = {'ngawang' : 'Ngawangs toes', 'sam' : 'sams a pedo', 
                     'biraj' : 'biraj is gay', 'ibra' : 'barry is great ofc', 
                     'tadi' : 'tadi is a lil bum'}
@@ -37,45 +32,28 @@ async def _roast(ctx, *, name, help = 'Responds with a "roast" tailored to the n
         if name == i:
             answer = roasting_dict[i]
             await ctx.send(f'name: {name}\nAnswer: {answer}')
-# clear messages
+
+# working with cogs 
+# load a cog
 @client.command()
-async def clear(ctx, amount = 5):
-    await ctx.channel.purge(limit=amount)
+async def load(ctx, extension):
+    client.load_extension(f'cogs.{extension}')
 
-# kick a player
+# unload a cog
 @client.command()
-async def kick(ctx, member : discord.Member, *, reason = None):
-    await member.kick(reason=reason)
-    if member.clear(ctx, amount > 5):
-        await member.kick(reason = "Too many Clears") 
+async def unload(ctx, extension):
+    client.unload_extension(f'cogs.{extension}')
 
-# ban a player
+# reload a cog
 @client.command()
-async def ban(ctx, member : discord.Member, *, reason = None):
-    await member.ban(reason=reason)
-
-# unban a player 
-@client.command()
-async def unban(ctx, *, member):
-    banned = await ctx.guild.bans()
-    member_name, member_discriminator = member.split('#') # seperate the number from the 4 digit id 
-    for entry in banned:
-        user = entry.user
-
-        if (user.name, user.discriminator) == (member_name, member_discriminator):
-            await ctx.guild.unban(user) 
-            await ctx.send(f'unbanned {user.mention}')
-            return 
+async def reload(ctx, extension):
+    client.unload_extension(f'cogs.{extension}')
+    client.load_extension(f'cogs.{extension}')
 
 
+for filename in os.listdir('./cogs'):
+    if filename.endswith('.py'):
+        client.load_extension(f'cogs.{filename[:-3]}')
 
 
-
-
-
-
-
-
-        
-
-client.run('NzMzMTA2OTQwMzMwMTE1MDgy.Xw-_Nw.hp_h6jl2_rJhGOFGCfQme58-Cz8')
+client.run('NzMzMTA2OTQwMzMwMTE1MDgy.Xw-VCw.Kud4WTsacSWNeDZZ8iJv1Q_IcDg')
