@@ -7,6 +7,8 @@ from cogs import *
 # the prefix is what you write before commands
 client = commands.Bot(command_prefix= '.')
 
+id = client.get_guild(733108482152202360)
+
 # to see if a member of the guild/server has joined 
 @client.event
 async def on_member_join(member):
@@ -56,4 +58,4 @@ for filename in os.listdir('./cogs'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
 
-client.run('NzMzMTA2OTQwMzMwMTE1MDgy.Xw-VCw.7cdYQe1Bq2EsxbFQ4bYyxocrTZs')
+client.run('NzMzMTA2OTQwMzMwMTE1MDgy.Xw-VCw.quDzdNOcgENd0z1J1ZRK9XYw-7A')
