@@ -11,23 +11,21 @@ class Manage(commands.Cog):
         await ctx.send('test')
 
     @commands.command()
-    async def clear(self, ctx, amount = 5):
-        # if user.mention == "Biraj#4109":
-        #     break
-        # else:
+    async def clear(self, ctx, amount=5):
         await ctx.channel.purge(limit=amount)
 
     # kick a player
     @commands.command()
     async def kick(self, ctx, member : discord.Member, *, reason = None):
         await member.kick(reason=reason)
-        if member.clear(ctx, amount > 5):
-            await member.kick(reason = "Too many Clears") 
+    
 
     # ban a player
     @commands.command()
     async def ban(self, ctx, member : discord.Member, *, reason = None):
         await member.ban(reason=reason)
+        # if member.clear(ctx, amount > 5):
+        #     await member.kick(reason = "Too many Clears") 
 
     # unban a player 
     @commands.command()
@@ -41,6 +39,6 @@ class Manage(commands.Cog):
                 await ctx.guild.unban(user) 
                 await ctx.send(f'unbanned {user.mention}')
                 return 
-
+                
 def setup(client):
     client.add_cog(Manage(client))
