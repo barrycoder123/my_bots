@@ -5,6 +5,7 @@ import difflib
 import time
 import asyncio
 import os
+from dotenv import load_dotenv
 from discord import channel
 from discord import message
 from discord.client import Client
@@ -15,7 +16,13 @@ from cogs import *
 # the prefix is what you write before commands
 client = commands.Bot(command_prefix= '.')
 
-id = client.get_guild(733108482152202360)
+load_dotenv()
+
+GUILD = os.getenv("DISCORD_GUILD")
+
+id = client.get_guild(GUILD)
+
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 # to see if a member of the guild/server has joined 
 @client.event
@@ -268,7 +275,5 @@ async def test2(ctx):
     
 
 
-
-
-client.run('NzMzMTA2OTQwMzMwMTE1MDgy.Xw-VCw.fD_hkoJVpF3ERKUAPTI24R7cpnA')
+client.run(TOKEN)
 
